@@ -1,0 +1,52 @@
+Date : 24th May 2025
+Note: Spring Boot Property Binding Issue in Docker vs Local
+============================================================
+
+Problem encountered:
+Environment variable set in Docker Compose as ORDER_CATALOG_SERVICE_URL=http://catalog-service:8081 was not overriding the local application.properties value orders.catalogServiceUrl=http://localhost:8081.
+
+Root cause:
+Spring Boot uses relaxed binding rules to map environment variables to properties.
+But the environment variable name must correspond closely to the property key.
+Here, ORDER_CATALOG_SERVICE_URL did not match orders.catalogServiceUrl because:
+
+orders vs order difference
+
+Different casing and underscore usage
+
+Spring Boot maps environment variables by converting dots (.) to underscores (_) and ignoring case.
+
+Correct binding:
+To override orders.catalogServiceUrl from environment variable, it should be named as either:
+
+ORDERS_CATALOGSERVICEURL
+
+or ORDERS_CATALOG_SERVICE_URL
+
+Lesson learned:
+Ensure your environment variable names in Docker Compose (or elsewhere) follow Spring Boot relaxed binding conventions that match the property keys.
+
+Understanding Spring Boot Property Binding (Relaxed Binding)
+Property keys in .properties or .yaml:
+Usually in dot notation, e.g., orders.catalogServiceUrl.
+
+Environment variables:
+Spring Boot automatically maps environment variables to properties using these rules:
+
+Dots (.) in property keys become underscores (_) in environment variable names.
+
+Case insensitive (uppercase or lowercase works).
+
+Hyphens (-) in property names are also converted to underscores (_).
+
+Camel case in properties is flattened (e.g., catalogServiceUrl → CATALOGSERVICEURL or CATALOG_SERVICE_URL).
+
+Example mapping:
+
+orders.catalogServiceUrl → environment variable: ORDERS_CATALOGSERVICEURL or ORDERS_CATALOG_SERVICE_URL
+
+Profile-specific properties:
+Spring Boot will load properties depending on active profiles (application-docker.properties etc.), but environment variables have the highest precedence.
+
+How Spring resolves:
+Spring first looks for an environment variable matching the relaxed binding of the property key before falling back to application.properties.
