@@ -1,0 +1,127 @@
+Project Interview Questions – Card Payment Switch Rewrite (Monolith to Microservices)
+
+🔹 Project Summary
+
+You worked on rewriting a monolithic card payment authorization/authentication switch application originally built using TIBCO AST. The goal was to upgrade the application using modern Java (Java 8+), Spring Boot, and introduce better architecture using microservices. The core logic remained the same, but the rewrite focused on:
+
+Eliminating legacy tech stack (TIBCO AST)
+
+Modernizing the codebase
+
+Improving maintainability and performance
+
+Integrating Caffeine cache for response speed improvements
+
+🔹 Project Highlights / Tasks Owned
+
+Designed and developed Spring Boot-based microservices to replace TIBCO AST modules.
+
+Integrated Caffeine cache to reduce frequent DB/API lookups.
+
+Developed secure and robust RESTful APIs for authorization and authentication.
+
+Enabled containerization using Docker to support cloud-native deployments.
+
+Configured Spring Profiles for managing environment-specific properties (like dev, docker, prod).
+
+Wrote unit and integration tests with JUnit and Mockito.
+
+🔹 Common Interview Questions & Follow-ups
+
+1. Explain your project architecture.
+
+Application is split into multiple microservices (e.g., Auth Service, Payment Gateway Service, Notification Service).
+
+Each microservice follows single responsibility and is independently deployable.
+
+Used Spring Boot for all services, with Caffeine for caching frequently accessed data.
+
+Dockerized services and orchestrated them via Docker Compose.
+
+REST APIs are used for internal and external service communication.
+
+MySQL used for persistence.
+
+Follow-up Questions:
+
+Why did you choose microservices over monolith?
+
+How are services communicating with each other?
+
+What challenges did you face during the migration?
+
+How is fault tolerance handled?
+
+What caching strategy did you follow?
+
+2. What design patterns did you use?
+
+👉 Strategy Pattern:
+
+Used to handle different payment modes (CreditCard, DebitCard, NetBanking) dynamically based on the request.
+
+👉 Singleton Pattern:
+
+Spring-managed beans (like services or config classes) are by default singletons.
+
+👉 Factory Pattern:
+
+Used in the cache or transaction handler logic to return specific implementations.
+
+👉 Template Method Pattern:
+
+Common transaction steps are implemented in a base class, while subclass defines the custom steps.
+
+👉 Adapter Pattern:
+
+Used to wrap legacy API/DB response formats into our new system’s required format.
+
+Follow-up Questions:
+
+Can you walk through how Strategy was used in your case?
+
+Where exactly did you implement the Adapter pattern?
+
+Why use Factory instead of just new-ing the object?
+
+🔹 Challenges Faced & Solutions
+
+Challenge: Legacy TIBCO AST was tightly coupled and undocumented.
+Solution: Reverse-engineered functionality and rebuilt modules incrementally using feature toggles for testing and release.
+
+Challenge: Performance bottlenecks due to frequent DB hits.
+Solution: Implemented Caffeine Cache with eviction and expiry policies.
+
+Challenge: Debugging transaction failures across services.
+Solution: Introduced centralized logging and request tracing with correlation IDs.
+
+Challenge: CI/CD not integrated for old TIBCO builds.
+Solution: Set up Git-based CI/CD using Jenkins and Docker, reducing manual deployment efforts.
+
+Follow-up Questions:
+
+What cache policy did you choose in Caffeine?
+
+How did you ensure atomicity in a distributed environment?
+
+How did you monitor failures and latency?
+
+What improvements did you notice post-cache integration?
+
+🔹 Performance & Observability Enhancements
+
+Caching: Caffeine cache reduced DB/API load significantly (up to 60% for hot paths).
+
+Asynchronous Processing: Introduced @Async and non-blocking REST templates for downstream APIs.
+
+Logging: Added structured JSON logging with unique transaction IDs.
+
+Metrics: Prometheus + Grafana for live metrics (e.g., payment volume, average response time).
+
+Follow-up Questions:
+
+How did you track cache hit/miss ratio?
+
+What kind of alerts were set up in Grafana?
+
+Explain one incident you diagnosed using logs/metrics.
