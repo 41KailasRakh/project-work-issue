@@ -1,0 +1,31 @@
+1] Scenario encounted while calling service through api gateway	
+Failed to fetch.
+Possible Reasons:
+CORS
+Network Failure
+URL scheme must be "http" or "https" for CORS request.
+
+CORS stands for Cross-Origin Resource Sharing. It’s a security feature built into web browsers to prevent one website from making requests to another domain without permission.
+
+🧠 Think of it Like This (Layman Example):
+Imagine your banking website (origin A) only trusts requests from its own app. Now, some malicious website (origin B) tries to make a payment request using your bank's API.
+
+CORS prevents that. Unless the bank's server explicitly says, "I allow requests from origin B", the browser blocks it.
+
+🔍 What is "Origin"?
+An "origin" is defined by:
+
+Protocol (http vs https)
+
+Domain (example.com)
+
+Port (8080, 443, etc)
+
+CORS is a browser security feature.
+When you access your backend API (http://localhost:8081/api/products) directly in the browser or via Postman, it usually works fine because no cross-origin policy applies or Postman ignores CORS.
+
+But when you call your API from a different origin (like Swagger UI running on a different port or domain), the browser enforces CORS policy.
+The browser sees a cross-origin request (e.g., Swagger UI runs on http://localhost:8080 and your backend on http://localhost:8081) and blocks it because your backend does not send the necessary CORS headers to allow that.
+
+Your backend needs to explicitly tell the browser it allows requests from other origins by sending CORS headers.
+If you don’t configure that in your backend, the browser refuses the request with a CORS error.
