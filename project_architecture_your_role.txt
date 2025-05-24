@@ -1,0 +1,38 @@
+Tell me about your current project architecture and your role
+Project:
+I'm working on a card payment switch rewrite project where we migrated a live, legacy application built using TIBCO AST into a modern Java-based backend using Spring Boot. The objective was to preserve the core logic but modernize the tech stack, improve maintainability, performance, and operational visibility.
+
+🏗️ Project Architecture
+It’s a monolithic Spring Boot application split into clearly defined modules (authorization, authentication, transaction routing, logging, etc.).
+
+Caffeine Cache was used to reduce latency and database hits, especially for frequently accessed config and routing data.
+
+REST APIs were developed for card payment authorization and authentication – following the ISO 8583 message structure.
+
+Docker was used to containerize the app for consistent environment setups (dev/test/prod).
+
+Used Spring Profiles to manage environment-specific configs like dev, test, and docker.
+
+Database: PostgreSQL was used to persist transaction metadata, logs, audit records, etc.
+
+Structured Logging with correlation IDs and centralized log analysis using ELK helped with tracing issues across layers.
+
+Basic retry and fallback logic was implemented to handle intermittent downstream service failures.
+
+Emphasized code modularity, clean architecture, and unit testing.
+
+👤 My Role & Contributions
+Played a key developer role in re-architecting and re-implementing core modules from TIBCO AST to Spring Boot.
+
+Led the design and implementation of the Caffeine caching strategy, including cache eviction, expiration, and fallback logic.
+
+Took ownership of transaction logging and tracing by implementing correlation IDs and structured logs.
+
+Developed key modules like transaction authorization, card validation, and failure recovery.
+
+Participated in code reviews, wrote unit and integration tests, and maintained a high level of code quality.
+
+Actively collaborated with QA and DevOps to support CI/CD pipelines and dockerized deployments.
+
+Acted as a bridge between legacy team and new dev team, translating undocumented logic into maintainable Java code.
+
